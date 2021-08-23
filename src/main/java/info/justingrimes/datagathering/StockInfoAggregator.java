@@ -9,7 +9,7 @@ import java.util.List;
 public class StockInfoAggregator implements SubjectAggregator {
     private final List<StockInfo> stockInfoList;
 
-    public StockInfoAggregator(List<String> tickers) {
+    public StockInfoAggregator(List<String> tickers, QueryExecutor stockQueryExecutor) {
         stockInfoList = new ArrayList<>();
         for (String tickerName :
                 tickers) {
@@ -24,7 +24,7 @@ public class StockInfoAggregator implements SubjectAggregator {
 
     @Override
     public String getJSON() throws JsonProcessingException {
-        var objectMapper = new ObjectMapper()
+        var objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(stockInfoList);
     }
 }
