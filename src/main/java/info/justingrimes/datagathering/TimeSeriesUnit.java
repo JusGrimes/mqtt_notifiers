@@ -1,19 +1,20 @@
 package info.justingrimes.datagathering;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Objects;
 
 public class TimeSeriesUnit implements Comparable<TimeSeriesUnit> {
-    private final Instant utcDateTime;
+    private final Instant utcInstant;
     private final double value;
 
     public TimeSeriesUnit(Instant instant, double value) {
-        utcDateTime = instant;
+        utcInstant = instant;
         this.value = value;
     }
 
-    public Instant getUtcDateTime() {
-        return utcDateTime;
+    public Instant getUtcInstant() {
+        return utcInstant;
     }
 
     public double getValue() {
@@ -23,7 +24,7 @@ public class TimeSeriesUnit implements Comparable<TimeSeriesUnit> {
 
     @Override
     public int compareTo(TimeSeriesUnit o) {
-        return utcDateTime.compareTo(o.getUtcDateTime());
+        return utcInstant.compareTo(o.getUtcInstant());
     }
 
 
@@ -34,11 +35,18 @@ public class TimeSeriesUnit implements Comparable<TimeSeriesUnit> {
         final var stdError =  0.000001;
         if (o == null || getClass() != o.getClass()) return false;
         TimeSeriesUnit that = (TimeSeriesUnit) o;
-        return (Math.abs(value - that.value) < stdError ) && utcDateTime.equals(that.utcDateTime);
+        return (Math.abs(value - that.value) < stdError ) && utcInstant.equals(that.utcInstant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(utcDateTime);
+        return Objects.hash(utcInstant);
+    }
+    @Override
+    public String toString() {
+        return "TimeSeriesUnit{" +
+                "utcInstant=" + utcInstant.atZone(ZoneId.systemDefault()) +
+                ", value=" + value +
+                '}';
     }
 }
